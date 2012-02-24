@@ -24,10 +24,10 @@ public class CommandWriteFile extends Command implements Constants {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(KEY_CMD + ":" + VAL_CMD_WRITEFILE);
-		sb.append(KEY_FILENAME + ":" + filename + "\n");
-		sb.append(KEY_OFFSET + ":" + byteOffset + "\n");
-		sb.append(KEY_CONTENT + ":" + content + "\n");
+		sb.append(KEY_CMD + ":" + VAL_CMD_WRITEFILE + DELIM);
+		sb.append(KEY_FILENAME + ":" + filename + DELIM);
+		sb.append(KEY_OFFSET + ":" + byteOffset + DELIM);
+		sb.append(KEY_CONTENT + ":" + content + DELIM);
 		sb.append(KEY_CMD_END + ":");
 		return sb.toString();
 	}

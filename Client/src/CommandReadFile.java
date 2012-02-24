@@ -28,9 +28,9 @@ public class CommandReadFile extends Command implements Constants {
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(KEY_CMD + ":" + VAL_CMD_READFILE);
-		sb.append(KEY_FILENAME + ":" + filename + "\n");
-		sb.append(KEY_OFFSET + ":" + byteOffset + "\n");
-		sb.append(KEY_LENGTH + ":" + byteLength + "\n");
+		sb.append(KEY_FILENAME + ":" + filename + DELIM);
+		sb.append(KEY_OFFSET + ":" + byteOffset + DELIM);
+		sb.append(KEY_LENGTH + ":" + byteLength + DELIM);
 		sb.append(KEY_CMD_END + ":");
 		return sb.toString();
 	}

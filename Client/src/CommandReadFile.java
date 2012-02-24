@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 /**
  *
  */
@@ -18,6 +20,11 @@ public class CommandReadFile extends Command implements Constants {
 		this.byteLength = byteLength;
 	}
 
+	/**
+	 * 
+	 */
+	public CommandReadFile() {}
+
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(KEY_CMD + ":" + VAL_CMD_READFILE);
@@ -26,5 +33,26 @@ public class CommandReadFile extends Command implements Constants {
 		sb.append(KEY_LENGTH + ":" + byteLength + "\n");
 		sb.append(KEY_CMD_END + ":");
 		return sb.toString();
+	}
+
+	/* (non-Javadoc)
+	 * 
+	 * @see Command#requestData() */
+	@Override
+	public void requestData() {
+		System.out.println("Please enter filename, byte offset and length: ");
+		Scanner sc = new Scanner(System.in);
+		filename = sc.next();
+		byteOffset = sc.nextInt();
+		byteLength = sc.nextInt();
+	}
+
+	@Override
+	public boolean processReply() {
+		if (!super.processReply())
+			return false;
+		System.out.println("Data read successful. Requested content: ");
+		System.out.println(reply.get(KEY_CONTENT));
+		return true;
 	}
 }

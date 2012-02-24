@@ -20,6 +20,7 @@ public interface Constants {
 	public static final String	VAL_STATUS_OK		= "OK";
 	public static final String	VAL_STATUS_FAILED	= "FAILED";
 	public static final String	VAL_STATUS_ERROR	= "ERROR";
+	public static final String	DELIM				= "\\n";
 
 	public static final int		OPT_READFILE		= 1;
 	public static final int		OPT_WRITEFILE		= 2;

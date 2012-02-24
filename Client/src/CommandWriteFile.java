@@ -32,4 +32,12 @@ public class CommandWriteFile extends Command implements Constants {
 		return sb.toString();
 	}
 
+	/* (non-Javadoc)
+	 * 
+	 * @see Command#requestData() */
+	@Override
+	public void requestData() {
+
+	}
+
 }

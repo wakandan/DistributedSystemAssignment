@@ -29,7 +29,7 @@ public abstract class Command implements Constants {
 	 * classes, such as CommandReadFile or CommandWriteFile */
 	public boolean processReply() {
 		String commandString = buffer.toString();
-		StringTokenizer st = new StringTokenizer(commandString);
+		StringTokenizer st = new StringTokenizer(commandString, DELIM);
 		while (st.hasMoreElements()) {
 			String stringPart = st.nextToken().toString();
 			System.out.println(stringPart);

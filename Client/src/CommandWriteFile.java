@@ -54,7 +54,7 @@ public class CommandWriteFile extends Command implements Constants {
 		String str = null;
 		try {
 			while ((str = br.readLine()) != null) {
-				sb.append(str);
+				sb.append(str + "\n");
 			}
 		} catch (IOException e) {
 			System.out.println("[error] Error reading input");

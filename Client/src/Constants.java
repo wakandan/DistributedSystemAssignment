@@ -15,6 +15,7 @@ public interface Constants {
 	public static final String	KEY_CONTENT			= "Content";
 	public static final String	VAL_CMD_READFILE	= "Readfile";
 	public static final String	VAL_CMD_WRITEFILE	= "Writefile";
+	public static final String	VAL_CMD_GETATT		= "GetfileAtt";
 	public static final String	KEY_CMD_END			= "EndCommand";
 	public static final String	KEY_STATUS			= "Status";
 	public static final String	VAL_STATUS_OK		= "OK";

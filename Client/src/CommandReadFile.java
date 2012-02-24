@@ -53,7 +53,7 @@ public class CommandReadFile extends Command implements Constants {
 		if (!super.processReply())
 			return false;
 		System.out.println("Data read successful. Requested content: ");
-		System.out.println(reply.get(KEY_CONTENT));
+		System.out.println(new String(reply.get(KEY_CONTENT)));
 		return true;
 	}
 }

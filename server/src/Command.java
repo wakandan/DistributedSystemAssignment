@@ -13,8 +13,9 @@ public class Command implements Constants{
 		hashMap = new HashMap();
 	}
 	public void setCommand(String commandString){
-		StringTokenizer st = new StringTokenizer(commandString);
-		System.out.println("number of token "+st.countTokens());
+		System.out.println("content "+commandString);
+		StringTokenizer st = new StringTokenizer(commandString,"\0");
+		System.out.println("number of token "+st.countTokens() );
 		while(st.hasMoreElements()){
 			String stringPart = st.nextToken().toString();
 			System.out.println(stringPart);

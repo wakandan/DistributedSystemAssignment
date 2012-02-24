@@ -25,19 +25,7 @@ public class Server{
 				aSocket.receive(request);
 				String receiveCommand = new String(request.getData());
 				command.setCommand(receiveCommand);
-//				StringTokenizer st = new StringTokenizer(receiveCommand);
-//				while(st.hasMoreElements()){
-//					String stringPart = st.nextToken().toString();
-//					StringTokenizer st1 = new StringTokenizer(stringPart,":");
-//					
-//					System.out.println("part" +stringPart);
-//				}
-//				File file = new File("Text");
-//				if(file.exists())System.out.println("file exist");
-//				else System.out.println("file not exist");
-//				byte[] sendByte = readFileAsString(file);
-//				String text = new String(request.getData());
-//				System.out.println("server "+text);
+
 				ReplyMessage replyMessage  = command.execute();
 				DatagramPacket reply;
 				if(replyMessage.error){

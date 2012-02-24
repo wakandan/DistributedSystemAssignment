@@ -35,27 +35,22 @@ public class Client implements Constants {
 		this.socket.receive(request);
 	}
 
-	/* A typical command wherein the request is constructed using pre-defined
-	 * keys and supplied values. The given strings will then be send to server */
-	public static String readFile(String filename, int byteOffset, int length) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(KEY_CMD + ":" + VAL_CMD_READFILE+"\n");
-		sb.append(KEY_FILENAME + ":" + filename + "\n");
-		sb.append(KEY_OFFSET + ":" + byteOffset + "\n");
-		sb.append(KEY_LENGTH + ":" + length + "\n");
-		sb.append(KEY_CMD_END+":");
-		return sb.toString();
-	}
-
 	public static void main(String args[]) throws IOException {
 		String serverIp = "127.0.0.1";
 		int serverPort = 6789;
 		Client client = new Client(serverIp, serverPort);
-		System.out.println("comand: "+readFile("text",2,10));
-		client.send(readFile("text",2,10));
-//		client.send("test");
+		Command cmdReadFile = new CommandReadFile("text", 2, 10);
+		client.send(cmdReadFile);
 		byte[] reply = new byte[1000];
 		client.recv(reply, reply.length);
 		System.out.println(new String(reply));
+	}
+
+	/**
+	 * @param cmdReadFile
+	 * @throws IOException
+	 */
+	private void send(Command cmdReadFile) throws IOException {
+		send(cmdReadFile + "");
 	}
 }

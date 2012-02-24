@@ -6,25 +6,30 @@
  * @author akai
  * 
  */
-public class CommandReadFile extends Command implements Constants {
+public class CommandWriteFile extends Command implements Constants {
 	public String	filename;
 	public int		byteOffset;
-	public int		byteLength;
+	public String	content;
 
-	public CommandReadFile(String filename, int byteOffset, int byteLength) {
+	public CommandWriteFile(String filename, int byteOffset) {
 		super();
 		this.filename = filename;
 		this.byteOffset = byteOffset;
-		this.byteLength = byteLength;
+		this.content = null;
 	}
 
+	/* (non-Javadoc)
+	 * 
+	 * @see Command#toString() */
+	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(KEY_CMD + ":" + VAL_CMD_READFILE);
+		sb.append(KEY_CMD + ":" + VAL_CMD_WRITEFILE);
 		sb.append(KEY_FILENAME + ":" + filename + "\n");
 		sb.append(KEY_OFFSET + ":" + byteOffset + "\n");
-		sb.append(KEY_LENGTH + ":" + byteLength + "\n");
+		sb.append(KEY_CONTENT + ":" + content + "\n");
 		sb.append(KEY_CMD_END + ":");
 		return sb.toString();
 	}
+
 }

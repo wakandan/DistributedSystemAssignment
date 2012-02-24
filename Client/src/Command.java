@@ -1,6 +1,4 @@
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.StringTokenizer;
 
 /**
@@ -25,6 +23,14 @@ public abstract class Command implements Constants {
 
 	public abstract void requestData();
 
+	public String wrapRequest(StringBuilder request) {
+		StringBuilder sb = new StringBuilder();
+		sb.append(KEY_CMD + ":" + cmdName + DELIM);
+		sb.append(request);
+		sb.append(KEY_CMD_END + ":");
+		return sb.toString();
+	}
+
 	/* Split a reply into a hashmap, then this will be used by concrete sub
 	 * classes, such as CommandReadFile or CommandWriteFile */
 	public boolean processReply() {
@@ -41,6 +47,9 @@ public abstract class Command implements Constants {
 			reply.put(key, value);
 		}
 		if (!((String) reply.get(KEY_STATUS)).equalsIgnoreCase(VAL_STATUS_OK)) {
+			System.out.println("[error] Command failed");
+			System.out.println("[status] " + reply.get(KEY_STATUS));
+			System.out.println("[reason] " + reply.get(KEY_CONTENT));
 			return false;
 		}
 		return true;

@@ -1,16 +1,8 @@
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-
-import javax.swing.filechooser.FileSystemView;
-import java.nio.*;
-import java.util.HashMap;
-import java.util.StringTokenizer;
 public class Server{
 	public static void main(String args[]){
 		DatagramSocket aSocket =null;

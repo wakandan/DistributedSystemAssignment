@@ -1,0 +1,7 @@
+server/bin
+server/.settings
+Client/bin
+Client/.settings
+makeFile
+.metadata
+test

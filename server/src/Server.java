@@ -1,13 +1,20 @@
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 
+import javax.swing.filechooser.FileSystemView;
+import java.nio.*;
+import java.util.HashMap;
+import java.util.StringTokenizer;
 public class Server{
 	public static void main(String args[]){
 		DatagramSocket aSocket =null;
+		Command command =new Command();
 		try{
 			
 			aSocket = new DatagramSocket(6789);
@@ -16,12 +23,21 @@ public class Server{
 				DatagramPacket request = new DatagramPacket(buffer, buffer.length);
 				
 				aSocket.receive(request);
+				String receiveCommand = new String(request.getData());
+				command.setCommand(receiveCommand);
+//				StringTokenizer st = new StringTokenizer(receiveCommand);
+//				while(st.hasMoreElements()){
+//					String stringPart = st.nextToken().toString();
+//					StringTokenizer st1 = new StringTokenizer(stringPart,":");
+//					
+//					System.out.println("part" +stringPart);
+//				}
 				File file = new File("Text");
 				if(file.exists())System.out.println("file exist");
 				else System.out.println("file not exist");
-				byte[] sendByte = getBytesFromFile(file);
-				String text = new String(request.getData());
-				System.out.println("server "+text);
+				byte[] sendByte = readFileAsString(file);
+//				String text = new String(request.getData());
+//				System.out.println("server "+text);
 				DatagramPacket reply = new DatagramPacket(sendByte,sendByte.length,request.getAddress(),request.getPort());
 				aSocket.send(reply);
 			}
@@ -33,38 +49,24 @@ public class Server{
 			if(aSocket!=null)aSocket.close();
 		}
 	}
-	public static byte[] getBytesFromFile(File file) throws IOException {
-	    InputStream is = new FileInputStream(file);
+	private static byte[] readFileAsString(File filePath)
+		    throws java.io.IOException{
+		        BufferedReader reader = new BufferedReader(
+		                new FileReader(filePath));
+		        char[] buf = new char[100];
+		        byte[] returnByte = new byte[1000];
+		        int numRead=0;
+		        int index =0;
+		        while((numRead=reader.read(buf)) != -1){
+		            for(int i=0;i< buf.length;i++){
+		            	returnByte[index+i]= (byte)buf[i];
+		     
+		            }
+		            index+= buf.length;
+		        }
+		        reader.close();
 
-	    // Get the size of the file
-	    long length = file.length();
+		        return returnByte;
+		    }
 
-	    // You cannot create an array using a long type.
-	    // It needs to be an int type.
-	    // Before converting to an int type, check
-	    // to ensure that file is not larger than Integer.MAX_VALUE.
-	    if (length > Integer.MAX_VALUE) {
-	        // File is too large
-	    }
-
-	    // Create the byte array to hold the data
-	    byte[] bytes = new byte[(int)length];
-
-	    // Read in the bytes
-	    int offset = 0;
-	    int numRead = 0;
-	    while (offset < bytes.length
-	           && (numRead=is.read(bytes, offset, bytes.length-offset)) >= 0) {
-	        offset += numRead;
-	    }
-
-	    // Ensure all the bytes have been read in
-	    if (offset < bytes.length) {
-	        throw new IOException("Could not completely read file "+file.getName());
-	    }
-
-	    // Close the input stream and return bytes
-	    is.close();
-	    return bytes;
-	}
 }

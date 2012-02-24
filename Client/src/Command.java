@@ -28,11 +28,10 @@ public abstract class Command implements Constants {
 	/* Split a reply into a hashmap, then this will be used by concrete sub
 	 * classes, such as CommandReadFile or CommandWriteFile */
 	public boolean processReply() {
-		String commandString = buffer.toString();
+		String commandString = new String(buffer);
 		StringTokenizer st = new StringTokenizer(commandString, DELIM);
 		while (st.hasMoreElements()) {
 			String stringPart = st.nextToken().toString();
-			System.out.println(stringPart);
 
 			StringTokenizer st1 = new StringTokenizer(stringPart, ":");
 			String key = st1.nextToken();

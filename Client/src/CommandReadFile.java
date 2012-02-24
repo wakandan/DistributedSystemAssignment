@@ -27,7 +27,7 @@ public class CommandReadFile extends Command implements Constants {
 
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(KEY_CMD + ":" + VAL_CMD_READFILE);
+		sb.append(KEY_CMD + ":" + VAL_CMD_READFILE + DELIM);
 		sb.append(KEY_FILENAME + ":" + filename + DELIM);
 		sb.append(KEY_OFFSET + ":" + byteOffset + DELIM);
 		sb.append(KEY_LENGTH + ":" + byteLength + DELIM);
@@ -40,11 +40,12 @@ public class CommandReadFile extends Command implements Constants {
 	 * @see Command#requestData() */
 	@Override
 	public void requestData() {
-		System.out.println("Please enter filename, byte offset and length: ");
+		System.out.print("Please enter filename, byte offset and length: ");
 		Scanner sc = new Scanner(System.in);
 		filename = sc.next();
 		byteOffset = sc.nextInt();
 		byteLength = sc.nextInt();
+		System.out.println(this.toString());
 	}
 
 	@Override

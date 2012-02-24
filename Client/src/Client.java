@@ -5,6 +5,7 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
+import java.util.Scanner;
 
 public class Client implements Constants {
 	public String			serverIp;
@@ -12,6 +13,7 @@ public class Client implements Constants {
 	public byte[]			buffer;
 	public DatagramSocket	socket;
 	public InetAddress		server;
+	public Command			command;
 
 	public Client(String serverIp, int serverPort) throws SocketException, UnknownHostException {
 		this.serverIp = serverIp;
@@ -30,32 +32,56 @@ public class Client implements Constants {
 		send(str.getBytes(), str.length());
 	}
 
-	public void recv(byte[] bytes, int maxLen) throws IOException {
-		DatagramPacket request = new DatagramPacket(bytes, maxLen);
+	public void recv() throws IOException {
+		DatagramPacket request = new DatagramPacket(this.command.buffer, this.command.buffer.length);
 		this.socket.receive(request);
 	}
 
-	/* A typical command wherein the request is constructed using pre-defined
-	 * keys and supplied values. The given strings will then be send to server */
-	public static String readFile(String filename, int byteOffset, int length) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(KEY_CMD + ":" + VAL_CMD_READFILE+"\n");
-		sb.append(KEY_FILENAME + ":" + filename + "\n");
-		sb.append(KEY_OFFSET + ":" + byteOffset + "\n");
-		sb.append(KEY_LENGTH + ":" + length + "\n");
-		sb.append(KEY_CMD_END+":");
-		return sb.toString();
-	}
-
 	public static void main(String args[]) throws IOException {
-		String serverIp = "127.0.0.1";
+//		String serverIp = "127.0.0.1";
+		String serverIp = "192.168.1.14";
 		int serverPort = 6789;
 		Client client = new Client(serverIp, serverPort);
+		client.displayMenu();
+	}
 
-		client.send(readFile("abc",2,5));
-//		client.send("test");
-		byte[] reply = new byte[1000];
-		client.recv(reply, reply.length);
-		System.out.println(new String(reply));
+	/**
+	 * `
+	 * 
+	 * @param cmdReadFile
+	 * @throws IOException
+	 */
+	private void send(Command cmdReadFile) throws IOException {
+		send(cmdReadFile + "");
+	}
+
+	public int displayCommands() {
+		System.out.println("**********");
+		System.out.println("1. Read from a file -- " + OPT_READFILE);
+		System.out.println("2. Write to a file -- " + OPT_WRITEFILE);
+		System.out.println("3. List all files");
+		System.out.println("4. Exit -- " + OPT_EXIT);
+		System.out.println("**********");
+		System.out.print("Your command?  ");
+		Scanner sc = new Scanner(System.in);
+		return sc.nextInt();
+	}
+
+	public void displayMenu() throws IOException {
+		int choiceCode = displayCommands();
+		while (choiceCode != OPT_EXIT) {
+			switch (choiceCode) {
+			case OPT_READFILE:
+				command = new CommandReadFile();
+				command.requestData();
+				break;
+			default:
+				System.out.println("Invalid command...");
+			}
+			this.send(command);
+			this.recv();
+			command.processReply();
+			choiceCode = displayCommands();
+		}
 	}
 }

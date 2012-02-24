@@ -51,8 +51,8 @@ public class Client implements Constants {
 		String serverIp = "127.0.0.1";
 		int serverPort = 6789;
 		Client client = new Client(serverIp, serverPort);
-		System.out.println("comand: "+readFile("text",2,10));
-		client.send(readFile("text",2,10));
+
+		client.send(readFile("abc",2,5));
 //		client.send("test");
 		byte[] reply = new byte[1000];
 		client.recv(reply, reply.length);

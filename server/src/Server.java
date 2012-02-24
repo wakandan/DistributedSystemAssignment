@@ -32,13 +32,19 @@ public class Server{
 //					
 //					System.out.println("part" +stringPart);
 //				}
-				File file = new File("Text");
-				if(file.exists())System.out.println("file exist");
-				else System.out.println("file not exist");
-				byte[] sendByte = readFileAsString(file);
+//				File file = new File("Text");
+//				if(file.exists())System.out.println("file exist");
+//				else System.out.println("file not exist");
+//				byte[] sendByte = readFileAsString(file);
 //				String text = new String(request.getData());
 //				System.out.println("server "+text);
-				DatagramPacket reply = new DatagramPacket(sendByte,sendByte.length,request.getAddress(),request.getPort());
+				ReplyMessage replyMessage  = command.execute();
+				DatagramPacket reply;
+				if(replyMessage.error){
+					reply = new DatagramPacket(replyMessage.content.getBytes(),replyMessage.content.getBytes().length,request.getAddress(),request.getPort());
+				}else{
+					reply = new DatagramPacket(replyMessage.sendByte,replyMessage.sendByte.length,request.getAddress(),request.getPort());
+				}
 				aSocket.send(reply);
 			}
 		}

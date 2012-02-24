@@ -1,12 +1,15 @@
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+
+
 import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+
 
 import javax.swing.filechooser.FileSystemView;
 import java.nio.*;
@@ -18,6 +21,7 @@ public class Server implements Constants {
 		DatagramSocket aSocket = null;
 		Command command = new Command();
 		try {
+
 
 			aSocket = new DatagramSocket(6789);
 			byte[] buffer = new byte[1000];
@@ -64,22 +68,5 @@ public class Server implements Constants {
 		return sb.toString();
 	}
 
-	private static byte[] readFileAsString(File filePath) throws IOException {
-		BufferedReader reader = new BufferedReader(new FileReader(filePath));
-		char[] buf = new char[100];
-		byte[] returnByte = new byte[1000];
-		int numRead = 0;
-		int index = 0;
-		while ((numRead = reader.read(buf)) != -1) {
-			for (int i = 0; i < buf.length; i++) {
-				returnByte[index + i] = (byte) buf[i];
-
-			}
-			index += buf.length;
-		}
-		reader.close();
-
-		return returnByte;
-	}
-
+	
 }

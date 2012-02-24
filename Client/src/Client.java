@@ -1,7 +1,6 @@
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
@@ -38,7 +37,7 @@ public class Client implements Constants {
 	}
 
 	public static void main(String args[]) throws IOException {
-//		String serverIp = "127.0.0.1";
+		// String serverIp = "127.0.0.1";
 		String serverIp = "192.168.1.14";
 		int serverPort = 6789;
 		Client client = new Client(serverIp, serverPort);
@@ -73,6 +72,10 @@ public class Client implements Constants {
 			switch (choiceCode) {
 			case OPT_READFILE:
 				command = new CommandReadFile();
+				command.requestData();
+				break;
+			case OPT_WRITEFILE:
+				command = new CommandWriteFile();
 				command.requestData();
 				break;
 			default:

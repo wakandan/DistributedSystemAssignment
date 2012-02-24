@@ -1,3 +1,8 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
 /**
  *
  */
@@ -16,6 +21,11 @@ public class CommandWriteFile extends Command implements Constants {
 		this.filename = filename;
 		this.byteOffset = byteOffset;
 		this.content = null;
+		this.cmdName = VAL_CMD_WRITEFILE;
+	}
+
+	public CommandWriteFile() {
+		this.cmdName = VAL_CMD_WRITEFILE;
 	}
 
 	/* (non-Javadoc)
@@ -24,12 +34,10 @@ public class CommandWriteFile extends Command implements Constants {
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(KEY_CMD + ":" + VAL_CMD_WRITEFILE + DELIM);
 		sb.append(KEY_FILENAME + ":" + filename + DELIM);
 		sb.append(KEY_OFFSET + ":" + byteOffset + DELIM);
 		sb.append(KEY_CONTENT + ":" + content + DELIM);
-		sb.append(KEY_CMD_END + ":");
-		return sb.toString();
+		return wrapRequest(sb);
 	}
 
 	/* (non-Javadoc)
@@ -37,7 +45,26 @@ public class CommandWriteFile extends Command implements Constants {
 	 * @see Command#requestData() */
 	@Override
 	public void requestData() {
+		System.out.print("[info] Please enter filename, byte offset and content: ");
+		Scanner sc = new Scanner(System.in);
+		filename = sc.next();
+		byteOffset = sc.nextInt();
+		StringBuilder sb = new StringBuilder();
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+		String str = null;
+		try {
+			while ((str = br.readLine()) != null) {
+				sb.append(str);
+			}
+		} catch (IOException e) {
+			System.out.println("[error] Error reading input");
+		} finally {
+			content = sb.toString();
+		}
+	}
 
+	public boolean processReply() {
+		return super.processReply();
 	}
 
 }

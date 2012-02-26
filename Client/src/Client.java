@@ -37,8 +37,8 @@ public class Client implements Constants {
 	}
 
 	public static void main(String args[]) throws IOException {
-		// String serverIp = "127.0.0.1";
-		String serverIp = "192.168.1.14";
+		 String serverIp = "127.0.0.1";
+//		String serverIp = "192.168.1.14";
 		int serverPort = 6789;
 		Client client = new Client(serverIp, serverPort);
 		client.displayMenu();

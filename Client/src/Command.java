@@ -25,6 +25,7 @@ public abstract class Command implements Constants {
 
 	public String wrapRequest(StringBuilder request) {
 		StringBuilder sb = new StringBuilder();
+		sb.append(INDEX_COMMAND + ":"+Client.indexCommand+DELIM);
 		sb.append(KEY_CMD + ":" + cmdName + DELIM);
 		sb.append(request);
 		sb.append(KEY_CMD_END + ":");

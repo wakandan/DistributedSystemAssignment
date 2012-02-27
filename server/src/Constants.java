@@ -8,6 +8,7 @@
  */
 public interface Constants {
 	public static final int		BUFFER_SIZE			= 10000;
+	public static final String 	INDEX_COMMAND		= "Index";
 	public static final String	KEY_FILENAME		= "Filename";
 	public static final String	KEY_OFFSET			= "Offset";
 	public static final String	KEY_LENGTH			= "Length";
@@ -15,6 +16,7 @@ public interface Constants {
 	public static final String	KEY_CONTENT			= "Content";
 	public static final String	VAL_CMD_READFILE	= "Readfile";
 	public static final String	VAL_CMD_WRITEFILE	= "Writefile";
+	public static final String	VAL_CMD_GETATT		= "GetfileAtt";
 	public static final String	KEY_CMD_END			= "EndCommand";
 	public static final String	KEY_STATUS			= "Status";
 	public static final String	VAL_STATUS_OK		= "OK";

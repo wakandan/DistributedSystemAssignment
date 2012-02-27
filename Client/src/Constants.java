@@ -8,6 +8,7 @@
  */
 public interface Constants {
 	public static final int		BUFFER_SIZE			= 10000;
+	public static final String 	INDEX_COMMAND		= "Index";
 	public static final String	KEY_FILENAME		= "Filename";
 	public static final String	KEY_OFFSET			= "Offset";
 	public static final String	KEY_LENGTH			= "Length";

@@ -19,7 +19,7 @@ public class CommandListFile extends Command {
 			return replyMessage;
 		}
 		try {
-			
+			System.out.println("in the list file");
 			 
 			  listOfFiles = file.listFiles(); 
 			  replyMessage.error = false;
@@ -36,9 +36,25 @@ public class CommandListFile extends Command {
 	@Override
 	public String replyMessage(ReplyMessage message) {
 		// TODO Auto-generated method stub
-		return null;
-	}
+		StringBuilder sb = new StringBuilder();
+		if (replyMessage.error) {
+			sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_ERROR
+					+ DELIM);
+			sb.append(Constants.KEY_CONTENT + ":" + message.content);
 
+		} else {
+			sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_OK
+					+ DELIM);
+			if(listOfFiles.length>0){
+				sb.append(Constants.KEY_CONTENT + ":");
+				for(int i=0;i<listOfFiles.length;i++){
+					sb.append(listOfFiles[i].getName()+",");
+				}
+				sb.deleteCharAt(sb.length()-1);
+			}
+		}
+		return sb.toString();
+	}
 	@Override
 	public String replyMessage() {
 		// TODO Auto-generated method stub

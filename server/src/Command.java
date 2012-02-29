@@ -37,7 +37,9 @@ public abstract class Command implements Constants {
 			return new CommandWriteFile(hashMapStatic,server);
 		} else if (commandName.equals(VAL_CMD_REGISTER)){
 			return new CommandRegister(hashMapStatic,server);
-		}
+		} else if (commandName.equals(VAL_CMD_GETDIRECTORY)) {
+			return new CommandListFile(hashMapStatic,server);
+		}else
 			return null;
 	}
 

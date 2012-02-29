@@ -87,6 +87,11 @@ public class Client implements Constants {
 				command.requestData();
 				indexCommand++;
 				break;
+			case OPT_DIRECTORY:
+				command = new CommandListDir();
+				command.requestData();
+				indexCommand++;
+				break;
 			default:
 				System.out.println("Invalid command...");
 			}

@@ -3,8 +3,11 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Client implements Constants {
 	public static int		indexCommand;
@@ -14,6 +17,7 @@ public class Client implements Constants {
 	public DatagramSocket	socket;
 	public InetAddress		server;
 	public Command			command;
+	public Thread			registerThread;
 
 	public Client(String serverIp, int serverPort) throws SocketException, UnknownHostException {
 		this.serverIp = serverIp;
@@ -61,7 +65,8 @@ public class Client implements Constants {
 		System.out.println("1. Read from a file -- " + OPT_READFILE);
 		System.out.println("2. Write to a file -- " + OPT_WRITEFILE);
 		System.out.println("3. List all files");
-		System.out.println("4. Exit -- " + OPT_EXIT);
+		System.out.println("4. Register for file change update -- " + OPT_REGISTER);
+		System.out.println("5. Exit -- " + OPT_EXIT);
 		System.out.println("**********");
 		System.out.print("Your command?  ");
 		Scanner sc = new Scanner(System.in);
@@ -95,11 +100,27 @@ public class Client implements Constants {
 			this.send(command);
 			this.recv();
 			command.processReply();
+			/* In case of registering for monitoring a new file... */
 			if (choiceCode == OPT_REGISTER) {
-				while (true) {
-					this.recv();
-					command.processReply();
-				}
+				socket.setSoTimeout(((CommandRegister) command).interval * 100);
+				Timer timer = new Timer();
+				timer.schedule(new TimerTask(){
+					public void run() {
+						((CommandRegister) command).timeElapsed = true;
+					}
+				}, ((CommandRegister) command).interval * 1000);
+
+				while (!((CommandRegister) command).timeElapsed)
+					try {
+						/* set time out so that it won't wait forever */
+						recv();
+						command.processReply();
+					} catch (SocketTimeoutException e) {} catch (IOException e) {
+						e.printStackTrace();
+					}
+				/* reset this value for waiting infinitely */
+				socket.setSoTimeout(0);
+				System.out.println("[info] Register period elapsed. Monitor removed");
 			}
 			choiceCode = displayCommands();
 		}

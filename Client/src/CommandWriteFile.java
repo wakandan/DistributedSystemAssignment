@@ -57,7 +57,8 @@ public class CommandWriteFile extends Command implements Constants {
 			while ((str = sc.nextLine()) != null && str.length() != 0) {
 				sb.append(str + "\n");
 			}
-			sb.deleteCharAt(sb.length() - 1);
+			if (sb.length() > 0)
+				sb.deleteCharAt(sb.length() - 1);
 		} finally {
 			content = sb.toString();
 		}

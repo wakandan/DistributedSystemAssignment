@@ -23,8 +23,9 @@ public class Server implements Constants {
 	public static int port = 6789;
 	public int serverPort;
 	DatagramSocket socket;
-	DatagramPacket request;
+	public DatagramPacket request;
 	HashMap<String, Client> clientList;
+	
 	public byte[] buffer;
 
 	public Server(int port) throws SocketException {
@@ -110,7 +111,7 @@ public class Server implements Constants {
 		while (true) {
 			server.receiveMessage();
 			String receiveCommand = new String(server.request.getData());
-			command = Command.setCommand(receiveCommand);
+			command = Command.setCommand(receiveCommand,server);
 			String indexCommand = command.hashMap.get(INDEX_COMMAND);
 			String sendMessageString = server.executeCommand(command,
 					indexCommand);

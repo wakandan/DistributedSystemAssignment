@@ -62,11 +62,12 @@ public class Client implements Constants {
 
 	public int displayCommands() {
 		System.out.println("**********");
-		System.out.println("1. Read from a file -- " + OPT_READFILE);
-		System.out.println("2. Write to a file -- " + OPT_WRITEFILE);
-		System.out.println("3. List all files");
-		System.out.println("4. Register for file change update -- " + OPT_REGISTER);
-		System.out.println("5. Exit -- " + OPT_EXIT);
+		System.out.println("1. Read from a file");
+		System.out.println("2. Write to a file");
+		System.out.println("3. Register file to server");
+		System.out.println("4. List file in a directory");
+		System.out.println("5. Delete file in server");
+		System.out.println("6. Exit");
 		System.out.println("**********");
 		System.out.print("Your command?  ");
 		Scanner sc = new Scanner(System.in);
@@ -91,6 +92,16 @@ public class Client implements Constants {
 				break;
 			case OPT_REGISTER:
 				command = new CommandRegister();
+				command.requestData();
+				indexCommand++;
+				break;
+			case OPT_DIRECTORY:
+				command = new CommandListDir();
+				command.requestData();
+				indexCommand++;
+				break;
+			case OPT_DELETE:
+				command = new CommandDelete();
 				command.requestData();
 				indexCommand++;
 				break;

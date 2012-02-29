@@ -11,8 +11,8 @@ import java.util.StringTokenizer;
 public abstract class Command implements Constants {
 	public HashMap<String, String> hashMap;
 	public ReplyMessage replyMessage;
-
-	public static Command setCommand(String commandString) {
+	public Server server;
+	public static Command setCommand(String commandString,Server server) {
 		System.out.println("content " + commandString);
 		StringTokenizer st = new StringTokenizer(commandString, DELIM);
 		HashMap<String, String> hashMapStatic = new HashMap<String, String>();
@@ -32,10 +32,12 @@ public abstract class Command implements Constants {
 		}
 		String commandName = (String) hashMapStatic.get(KEY_CMD);
 		if (commandName.equals(VAL_CMD_READFILE)) {
-			return new CommandReadFile(hashMapStatic);
+			return new CommandReadFile(hashMapStatic,server);
 		} else if (commandName.equals(VAL_CMD_WRITEFILE)) {
-			return new CommandWriteFile(hashMapStatic);
-		} else
+			return new CommandWriteFile(hashMapStatic,server);
+		} else if (commandName.equals(VAL_CMD_REGISTER)){
+			return new CommandRegister(hashMapStatic,server);
+		}
 			return null;
 	}
 

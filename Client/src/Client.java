@@ -82,12 +82,23 @@ public class Client implements Constants {
 				command.requestData();
 				indexCommand++;
 				break;
+			case OPT_REGISTER:
+				command = new CommandRegister();
+				command.requestData();
+				indexCommand++;
+				break;
 			default:
 				System.out.println("Invalid command...");
 			}
 			this.send(command);
 			this.recv();
 			command.processReply();
+			if(choiceCode == OPT_REGISTER){
+				while(true){
+					this.recv();
+					command.processReply();
+				}
+			}
 			choiceCode = displayCommands();
 		}
 	}

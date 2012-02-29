@@ -4,9 +4,10 @@ import java.io.FileReader;
 import java.util.HashMap;
 
 public class CommandReadFile extends Command {
-	public CommandReadFile(HashMap<String, String> hashMap) {
+	public CommandReadFile(HashMap<String, String> hashMap,Server server) {
 		this.hashMap = hashMap;
 		replyMessage = new ReplyMessage();
+		this.server = server;
 	}
 
 	@Override

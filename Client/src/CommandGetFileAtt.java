@@ -10,7 +10,7 @@ import java.util.Scanner;
  */
 public class CommandGetFileAtt extends Command implements Constants {
 	String	filename;
-	
+
 	public CommandGetFileAtt() {
 		this.cmdName = VAL_CMD_GETATT;
 	}
@@ -29,7 +29,9 @@ public class CommandGetFileAtt extends Command implements Constants {
 	 * @see Command#requestData() */
 	@Override
 	public void requestData() {
+		Scanner sc = new Scanner(System.in);
 		System.out.print("[info] Enter file name: ");
-		filename = (new Scanner(System.in)).next();
+		filename = sc.next();
+		sc.close();
 	}
 }

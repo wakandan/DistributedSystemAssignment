@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 
 /**
@@ -50,15 +51,13 @@ public class CommandWriteFile extends Command implements Constants {
 		filename = sc.next();
 		byteOffset = sc.nextInt();
 		StringBuilder sb = new StringBuilder();
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		String str = null;
 		try {
-			while ((str = br.readLine()) != null) {
+			sc.nextLine();
+			while ((str = sc.nextLine()) != null && str.length() != 0) {
 				sb.append(str + "\n");
 			}
-			sb.deleteCharAt(sb.length()-1);
-		} catch (IOException e) {
-			System.out.println("[error] Error reading input");
+			sb.deleteCharAt(sb.length() - 1);
 		} finally {
 			content = sb.toString();
 		}

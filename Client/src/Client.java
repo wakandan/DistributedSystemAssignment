@@ -7,13 +7,14 @@ import java.net.UnknownHostException;
 import java.util.Scanner;
 
 public class Client implements Constants {
-	public static int  indexCommand;
+	public static int		indexCommand;
 	public String			serverIp;
 	public int				serverPort;
 	public byte[]			buffer;
 	public DatagramSocket	socket;
 	public InetAddress		server;
 	public Command			command;
+
 	public Client(String serverIp, int serverPort) throws SocketException, UnknownHostException {
 		this.serverIp = serverIp;
 		this.serverPort = serverPort;
@@ -37,10 +38,10 @@ public class Client implements Constants {
 	}
 
 	public static void main(String args[]) throws IOException {
-		 String serverIp = "127.0.0.1";
-//		String serverIp = "192.168.1.14";
+//		String serverIp = "127.0.0.1";
+		 String serverIp = "192.168.1.14";
 		int serverPort = 6789;
-		indexCommand=0;
+		indexCommand = 0;
 		Client client = new Client(serverIp, serverPort);
 		client.displayMenu();
 	}
@@ -64,7 +65,8 @@ public class Client implements Constants {
 		System.out.println("**********");
 		System.out.print("Your command?  ");
 		Scanner sc = new Scanner(System.in);
-		return sc.nextInt();
+		int result = sc.nextInt();
+		return result;
 	}
 
 	public void displayMenu() throws IOException {

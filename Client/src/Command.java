@@ -52,6 +52,9 @@ public abstract class Command implements Constants {
 			System.out.println("[status] " + reply.get(KEY_STATUS));
 			System.out.println("[reason] " + reply.get(KEY_CONTENT));
 			return false;
+		}else {			
+			System.out.println("[status] " + reply.get(KEY_STATUS));
+			System.out.println("[reason] " + reply.get(KEY_CONTENT));
 		}
 		return true;
 	}

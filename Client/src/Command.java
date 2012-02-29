@@ -10,12 +10,11 @@ import java.util.StringTokenizer;
  * 
  */
 public abstract class Command implements Constants {
-	public String					cmdName;
-	public HashMap<String, String>	reply;
-	public byte[]					buffer;
+	public String	cmdName;
+	public byte[]	buffer;
+	public Request	request;
 
 	public Command() {
-		reply = new HashMap<String, String>();
 		buffer = new byte[BUFFER_SIZE];
 	}
 
@@ -25,7 +24,7 @@ public abstract class Command implements Constants {
 
 	public String wrapRequest(StringBuilder request) {
 		StringBuilder sb = new StringBuilder();
-		sb.append(INDEX_COMMAND + ":"+Client.indexCommand+DELIM);
+		sb.append(INDEX_COMMAND + ":" + Client.indexCommand + DELIM);
 		sb.append(KEY_CMD + ":" + cmdName + DELIM);
 		sb.append(request);
 		sb.append(KEY_CMD_END + ":");
@@ -35,27 +34,8 @@ public abstract class Command implements Constants {
 	/* Split a reply into a hashmap, then this will be used by concrete sub
 	 * classes, such as CommandReadFile or CommandWriteFile */
 	public boolean processReply() {
-		String commandString = new String(buffer);
-		StringTokenizer st = new StringTokenizer(commandString, DELIM);
-		while (st.hasMoreElements()) {
-			String stringPart = st.nextToken().toString();
-
-			StringTokenizer st1 = new StringTokenizer(stringPart, ":");
-			String key = st1.nextToken();
-			if (key.equals(KEY_CMD_END))
-				break;
-			String value = st1.nextToken();
-			reply.put(key, value);
-		}
-		if (!((String) reply.get(KEY_STATUS)).equalsIgnoreCase(VAL_STATUS_OK)) {
-			System.out.println("[error] Command failed");
-			System.out.println("[status] " + reply.get(KEY_STATUS));
-			System.out.println("[reason] " + reply.get(KEY_CONTENT));
-			return false;
-		}else {			
-			System.out.println("[status] " + reply.get(KEY_STATUS));
-			System.out.println("[reason] " + reply.get(KEY_CONTENT));
-		}
+		request = Request.read(buffer);
+		System.out.println("[status] " + request.status);
 		return true;
 	}
 }

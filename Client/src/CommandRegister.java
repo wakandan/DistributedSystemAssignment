@@ -42,4 +42,5 @@ public class CommandRegister extends Command {
 			return false;
 		return true;
 	}
+
 }

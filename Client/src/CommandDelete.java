@@ -1,11 +1,12 @@
 import java.util.Scanner;
 
-
 public class CommandDelete extends Command {
 	public String	filePath;
-	public CommandDelete(){
+
+	public CommandDelete() {
 		this.cmdName = VAL_CMD_DELETE;
 	}
+
 	@Override
 	public String toString() {
 		// TODO Auto-generated method stub
@@ -21,14 +22,11 @@ public class CommandDelete extends Command {
 		Scanner sc = new Scanner(System.in);
 		filePath = sc.next();
 	}
+
 	@Override
 	public boolean processReply() {
 		if (!super.processReply())
 			return false;
-
-//		System.out.println("[info] Data read successful. Requested content: ");
-		System.out.println(reply.get(KEY_CONTENT));
-
 		return true;
 	}
 }

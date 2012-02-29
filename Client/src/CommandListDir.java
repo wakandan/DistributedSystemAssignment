@@ -11,9 +11,11 @@ import java.util.StringTokenizer;
  */
 public class CommandListDir extends Command implements Constants {
 	public String	directory;
-	public CommandListDir(){
+
+	public CommandListDir() {
 		this.cmdName = VAL_CMD_GETDIRECTORY;
 	}
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
@@ -26,21 +28,23 @@ public class CommandListDir extends Command implements Constants {
 	 * @see Command#requestData() */
 	@Override
 	public void requestData() {
-		System.out.print("[info] Please enter : ");
+		System.out.print("[info] Please enter dir name: ");
 		Scanner sc = new Scanner(System.in);
 		directory = sc.next();
 
 	}
+
 	@Override
 	public boolean processReply() {
 		if (!super.processReply())
 			return false;
+		if (request.status.equalsIgnoreCase(VAL_STATUS_ERROR)) {
+			System.out.println("[error] Error listing directory");
+			return false;
+		}
 
-		System.out.println("Directory contents ");
-		String content = reply.get(KEY_CONTENT);
-		System.out.println(reply.get(KEY_CONTENT));
-		StringTokenizer st = new StringTokenizer(content,",");
-		while(st.hasMoreElements()){
+		StringTokenizer st = new StringTokenizer(request.content, ",");
+		while (st.hasMoreElements()) {
 			System.out.println(st.nextToken());
 		}
 

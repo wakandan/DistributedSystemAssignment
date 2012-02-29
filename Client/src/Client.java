@@ -56,8 +56,8 @@ public class Client implements Constants {
 	 * @param cmdReadFile
 	 * @throws IOException
 	 */
-	private void send(Command cmdReadFile) throws IOException {
-		send(cmdReadFile + "");
+	private void send(Command command) throws IOException {
+		send(command + "");
 	}
 
 	public int displayCommands() {
@@ -77,62 +77,60 @@ public class Client implements Constants {
 
 	public void displayMenu() throws IOException {
 		int choiceCode = displayCommands();
-
+		boolean choiceValid = true;
 		while (choiceCode != OPT_EXIT) {
 			switch (choiceCode) {
 			case OPT_READFILE:
 				command = new CommandReadFile();
-				command.requestData();
-				indexCommand++;
 				break;
 			case OPT_WRITEFILE:
 				command = new CommandWriteFile();
-				command.requestData();
-				indexCommand++;
 				break;
 			case OPT_REGISTER:
 				command = new CommandRegister();
-				command.requestData();
-				indexCommand++;
 				break;
 			case OPT_DIRECTORY:
 				command = new CommandListDir();
-				command.requestData();
-				indexCommand++;
 				break;
 			case OPT_DELETE:
 				command = new CommandDelete();
-				command.requestData();
-				indexCommand++;
 				break;
 			default:
 				System.out.println("Invalid command...");
+				choiceValid = false;
 			}
-			this.send(command);
-			this.recv();
-			command.processReply();
-			/* In case of registering for monitoring a new file... */
-			if (choiceCode == OPT_REGISTER) {
-				socket.setSoTimeout(((CommandRegister) command).interval * 100);
-				Timer timer = new Timer();
-				timer.schedule(new TimerTask(){
-					public void run() {
-						((CommandRegister) command).timeElapsed = true;
-					}
-				}, ((CommandRegister) command).interval * 1000);
 
-				while (!((CommandRegister) command).timeElapsed)
-					try {
-						/* set time out so that it won't wait forever */
-						recv();
-						command.processReply();
-					} catch (SocketTimeoutException e) {} catch (IOException e) {
-						e.printStackTrace();
-					}
-				/* reset this value for waiting infinitely */
-				socket.setSoTimeout(0);
-				System.out.println("[info] Register period elapsed. Monitor removed");
+			if (choiceValid) {
+				command.requestData();
+				indexCommand++;
+				this.send(command);
+				this.recv();
+				command.processReply();
+
+				/* In case of registering for monitoring a new file... */
+				if (choiceCode == OPT_REGISTER) {
+					socket.setSoTimeout(((CommandRegister) command).interval * 100);
+					Timer timer = new Timer();
+					timer.schedule(new TimerTask(){
+						public void run() {
+							((CommandRegister) command).timeElapsed = true;
+						}
+					}, ((CommandRegister) command).interval * 1000);
+
+					while (!((CommandRegister) command).timeElapsed)
+						try {
+							/* set time out so that it won't wait forever */
+							recv();
+							command.processReply();
+						} catch (SocketTimeoutException e) {} catch (IOException e) {
+							e.printStackTrace();
+						}
+					/* reset this value for waiting infinitely */
+					socket.setSoTimeout(0);
+					System.out.println("[info] Register period elapsed. Monitor removed");
+				}
 			}
+
 			choiceCode = displayCommands();
 		}
 	}

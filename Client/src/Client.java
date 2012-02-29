@@ -38,8 +38,8 @@ public class Client implements Constants {
 	}
 
 	public static void main(String args[]) throws IOException {
-//		String serverIp = "127.0.0.1";
-		 String serverIp = "192.168.1.14";
+		String serverIp = "127.0.0.1";
+		// String serverIp = "192.168.1.14";
 		int serverPort = 6789;
 		indexCommand = 0;
 		Client client = new Client(serverIp, serverPort);
@@ -95,8 +95,8 @@ public class Client implements Constants {
 			this.send(command);
 			this.recv();
 			command.processReply();
-			if(choiceCode == OPT_REGISTER){
-				while(true){
+			if (choiceCode == OPT_REGISTER) {
+				while (true) {
 					this.recv();
 					command.processReply();
 				}

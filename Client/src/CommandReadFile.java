@@ -46,7 +46,6 @@ public class CommandReadFile extends Command implements Constants {
 		filename = sc.next();
 		byteOffset = sc.nextInt();
 		byteLength = sc.nextInt();
-		sc.close();
 	}
 
 	@Override

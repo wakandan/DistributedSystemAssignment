@@ -24,7 +24,7 @@ public class CommandReadFile extends Command {
 					.parseInt(stringOffSet) : 0;
 			String stringLength = hashMap.get(KEY_LENGTH);
 			int lenght = (stringLength != null) ? Integer
-					.parseInt(stringLength) : 0;
+					.parseInt(stringLength) : (int)file.length();
 			if (file.length() < offset + lenght) {
 				System.out.println("error out of range");
 				replyMessage.error = true;

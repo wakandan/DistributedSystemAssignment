@@ -14,6 +14,10 @@ public abstract class Command implements Constants {
 	public byte[]	buffer;
 	public Request	request;
 
+	/* indicate whether the command has been served. client will only send out
+	 * command when this is NOT set. Otherwise, it will proceed as normal */
+	public boolean	isServed	= false;
+
 	public Command() {
 		buffer = new byte[BUFFER_SIZE];
 	}
@@ -36,6 +40,7 @@ public abstract class Command implements Constants {
 	public boolean processReply() {
 		request = Request.read(buffer);
 		System.out.println("[status] " + request.status);
+		isServed = true;
 		return true;
 	}
 }

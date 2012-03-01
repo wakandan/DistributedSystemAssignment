@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.Scanner;
 
 /**
@@ -9,9 +10,10 @@ import java.util.Scanner;
  * 
  */
 public class CommandReadFile extends Command implements Constants {
-	public String	filename;
-	public int		byteOffset;
-	public int		byteLength;
+	public String						filename;
+	public int							byteOffset;
+	public int							byteLength;
+	public HashMap<String, CacheEntry>	cache;
 
 	public CommandReadFile(String filename, int byteOffset, int byteLength) {
 		super();
@@ -26,13 +28,13 @@ public class CommandReadFile extends Command implements Constants {
 	 */
 	public CommandReadFile() {
 		this.cmdName = VAL_CMD_READFILE;
+		cache = new HashMap<String, CacheEntry>();
 	}
 
+	/* construct the request from current data to send to server */
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
 		sb.append(KEY_FILENAME + ":" + filename + DELIM);
-		sb.append(KEY_OFFSET + ":" + byteOffset + DELIM);
-		sb.append(KEY_LENGTH + ":" + byteLength + DELIM);
 		return wrapRequest(sb);
 	}
 
@@ -46,12 +48,21 @@ public class CommandReadFile extends Command implements Constants {
 		filename = sc.next();
 		byteOffset = sc.nextInt();
 		byteLength = sc.nextInt();
+
+		/* if the file is in cache and */
+		if (cache.containsKey(filename) && cache.get(filename).isValid()) {
+			System.out.println("[info] from cache");
+			isServed = true;
+			System.out.println(cache.get(filename).data.substring(byteOffset, byteLength));
+		}
 	}
 
 	@Override
 	public boolean processReply() {
 		if (!super.processReply())
 			return false;
+		cache.put(filename, new CacheEntry(request.content, CACHE_FRESHTIME));
+		System.out.println(request.content.substring(byteOffset, byteLength));
 		return true;
 	}
 }

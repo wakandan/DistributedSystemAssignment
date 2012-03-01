@@ -103,12 +103,17 @@ public class Client implements Constants {
 			if (choiceValid) {
 				command.requestData();
 				indexCommand++;
-				this.send(command);
-				this.recv();
-				command.processReply();
+				/* only if the command can not be served locally, client send
+				 * the request to server */
+				if (!command.isServed) {
+					this.send(command);
+					this.recv();
+					command.processReply();
+				}
 
 				/* In case of registering for monitoring a new file... */
 				if (choiceCode == OPT_REGISTER) {
+					/* set time out so that it won't wait forever */
 					socket.setSoTimeout(((CommandRegister) command).interval * 100);
 					Timer timer = new Timer();
 					timer.schedule(new TimerTask(){
@@ -119,7 +124,6 @@ public class Client implements Constants {
 
 					while (!((CommandRegister) command).timeElapsed)
 						try {
-							/* set time out so that it won't wait forever */
 							recv();
 							command.processReply();
 						} catch (SocketTimeoutException e) {} catch (IOException e) {

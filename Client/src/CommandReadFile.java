@@ -10,10 +10,10 @@ import java.util.Scanner;
  * 
  */
 public class CommandReadFile extends Command implements Constants {
-	public String						filename;
-	public int							byteOffset;
-	public int							byteLength;
-	public HashMap<String, CacheEntry>	cache;
+	public String								filename;
+	public int									byteOffset;
+	public int									byteLength;
+	public static HashMap<String, CacheEntry>	cache	= new HashMap<String, CacheEntry>();	;
 
 	public CommandReadFile(String filename, int byteOffset, int byteLength) {
 		super();
@@ -28,7 +28,6 @@ public class CommandReadFile extends Command implements Constants {
 	 */
 	public CommandReadFile() {
 		this.cmdName = VAL_CMD_READFILE;
-		cache = new HashMap<String, CacheEntry>();
 	}
 
 	/* construct the request from current data to send to server */
@@ -53,7 +52,8 @@ public class CommandReadFile extends Command implements Constants {
 		if (cache.containsKey(filename) && cache.get(filename).isValid()) {
 			System.out.println("[info] from cache");
 			isServed = true;
-			System.out.println(cache.get(filename).data.substring(byteOffset, byteLength));
+			System.out.println("[content] "
+					+ getData(cache.get(filename).data, byteOffset, byteLength));
 		}
 	}
 
@@ -61,8 +61,21 @@ public class CommandReadFile extends Command implements Constants {
 	public boolean processReply() {
 		if (!super.processReply())
 			return false;
-		cache.put(filename, new CacheEntry(request.content, CACHE_FRESHTIME));
-		System.out.println(request.content.substring(byteOffset, byteLength));
+		CacheEntry ce = new CacheEntry(request.content, CACHE_FRESHTIME);
+		cache.put(filename, ce);
+		System.out.println("[content] " + getData(request.content, byteOffset, byteLength));
 		return true;
+	}
+
+	public static String getData(String str, int start, int length) {
+		if (str == null)
+			return null;
+		if (start > str.length())
+			return null;
+		if (start + length > str.length())
+			return str.substring(start, str.length() - 1);
+		else
+			return str.substring(start, length + start);
+
 	}
 }

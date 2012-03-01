@@ -41,6 +41,10 @@ public abstract class Command implements Constants {
 		request = Request.read(buffer);
 		System.out.println("[status] " + request.status);
 		isServed = true;
-		return true;
+		if (request.status.equalsIgnoreCase(VAL_STATUS_OK))
+			return true;
+		else
+			System.out.println("[reason] " + request.content);
+		return false;
 	}
 }

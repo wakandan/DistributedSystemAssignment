@@ -12,7 +12,14 @@ public abstract class Command implements Constants {
 	public HashMap<String, String> hashMap;
 	public ReplyMessage replyMessage;
 	public Server server;
-	public static Command setCommand(String commandString,Server server) {
+
+	public Command(HashMap<String, String> hashMap, Server server) {
+		this.hashMap = hashMap;
+		this.replyMessage = new ReplyMessage();
+		this.server = server;
+	}
+
+	public static Command setCommand(String commandString, Server server) {
 		System.out.println("content " + commandString);
 		StringTokenizer st = new StringTokenizer(commandString, DELIM);
 		HashMap<String, String> hashMapStatic = new HashMap<String, String>();
@@ -32,24 +39,36 @@ public abstract class Command implements Constants {
 		}
 		String commandName = (String) hashMapStatic.get(KEY_CMD);
 		if (commandName.equals(VAL_CMD_READFILE)) {
-			return new CommandReadFile(hashMapStatic,server);
+			return new CommandReadFile(hashMapStatic, server);
 		} else if (commandName.equals(VAL_CMD_WRITEFILE)) {
-			return new CommandWriteFile(hashMapStatic,server);
-		} else if (commandName.equals(VAL_CMD_REGISTER)){
-			return new CommandRegister(hashMapStatic,server);
+			return new CommandWriteFile(hashMapStatic, server);
+		} else if (commandName.equals(VAL_CMD_REGISTER)) {
+			return new CommandRegister(hashMapStatic, server);
 		} else if (commandName.equals(VAL_CMD_GETDIRECTORY)) {
-			return new CommandListFile(hashMapStatic,server);
-		}else if (commandName.equals(VAL_CMD_DELETE)) {
-			return new CommandDelete(hashMapStatic,server);
-		}
-		else
+			return new CommandListFile(hashMapStatic, server);
+		} else if (commandName.equals(VAL_CMD_DELETE)) {
+			return new CommandDelete(hashMapStatic, server);
+		} else
 			return null;
 	}
 
 	public abstract ReplyMessage execute();
 
-	public abstract String replyMessage(ReplyMessage message);
+	public String replyMessage(ReplyMessage message) {
+		StringBuilder sb = new StringBuilder();
+		if (message.error) {
+			sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_ERROR
+					+ DELIM);
+		} else {
+			sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_OK
+					+ DELIM);
+		}
+		sb.append(Constants.KEY_CONTENT + ":" + message.content);
+		return sb.toString();
+	}
 
-	public abstract String replyMessage();
+	public String replyMessage() {
+		return replyMessage(replyMessage);
+	}
 
 }

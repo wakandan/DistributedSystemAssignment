@@ -8,9 +8,7 @@ import java.util.HashMap;
 
 public class CommandWriteFile extends Command {
 	public CommandWriteFile(HashMap<String, String> hashMap, Server server) {
-		this.hashMap = hashMap;
-		replyMessage = new ReplyMessage();
-		this.server = server;
+		super(hashMap, server);
 	}
 
 	public ReplyMessage execute() {
@@ -69,63 +67,38 @@ public class CommandWriteFile extends Command {
 		System.out.println("successfull add");
 		sendToRegisterClient(filePath.getPath());
 	}
-	public void sendToRegisterClient(String filePath) throws IOException{
-		RegisterClientList clientList = CommandRegister.registerFileList.get(filePath);
-		if(clientList==null){
+
+	public void sendToRegisterClient(String filePath) throws IOException {
+		RegisterClientList clientList = CommandRegister.registerFileList
+				.get(filePath);
+		if (clientList == null) {
 			System.out.println("don't have the client list for this file");
 			return;
-		}else{
-			
-			if(clientList.refresh()){
-//				list still have element
+		} else {
+
+			if (clientList.refresh()) {
+				// list still have element
 				System.out.println("have a client register for this file");
-				for(int i=0;i< clientList.size(); i++){
+				for (int i = 0; i < clientList.size(); i++) {
 					RegisterClient client = clientList.get(i);
-					server.sendMessage(acknowledgeMessage(filePath), client.ip, client.port);
-					System.out.println("a client register for this file "+client.ip+" port "+client.port);
+					server.sendMessage(acknowledgeMessage(filePath), client.ip,
+							client.port);
+					System.out.println("a client register for this file "
+							+ client.ip + " port " + client.port);
 				}
-			}else{
-				//list is empty
+			} else {
+				// list is empty
 				System.out.println("client list is empty");
 				CommandRegister.registerFileList.remove(filePath);
 			}
 		}
 	}
-	public String acknowledgeMessage(String fileName){
-		StringBuilder sb = new StringBuilder();
-			sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_OK
-					+ DELIM);
-		sb.append(Constants.KEY_CONTENT + ":" + "file "+fileName+" has been changed");
-		return sb.toString();
-	}
-	
-	public String replyMessage(ReplyMessage replyMessage) {
-		StringBuilder sb = new StringBuilder();
 
-		if (replyMessage.error) {
-			sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_ERROR
-					+ DELIM);
-
-		} else {
-			sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_OK
-					+ DELIM);
-		}
-		sb.append(Constants.KEY_CONTENT + ":" + replyMessage.content);
-		return sb.toString();
-	}
-
-	@Override
-	public String replyMessage() {
-		// TODO Auto-generated method stub
+	public String acknowledgeMessage(String fileName) {
 		StringBuilder sb = new StringBuilder();
-		if (replyMessage.error) {
-			sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_ERROR
-					+ DELIM);
-		} else {
-			sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_OK
-					+ DELIM);
-		}
-		sb.append(Constants.KEY_CONTENT + ":" + replyMessage.content);
+		sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_OK + DELIM);
+		sb.append(Constants.KEY_CONTENT + ":" + "file " + fileName
+				+ " has been changed");
 		return sb.toString();
 	}
 

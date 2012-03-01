@@ -4,10 +4,8 @@ import java.io.FileReader;
 import java.util.HashMap;
 
 public class CommandReadFile extends Command {
-	public CommandReadFile(HashMap<String, String> hashMap,Server server) {
-		this.hashMap = hashMap;
-		replyMessage = new ReplyMessage();
-		this.server = server;
+	public CommandReadFile(HashMap<String, String> hashMap, Server server) {
+		super(hashMap, server);
 	}
 
 	@Override
@@ -21,8 +19,12 @@ public class CommandReadFile extends Command {
 			return replyMessage;
 		}
 		try {
-			int offset = Integer.parseInt((String) hashMap.get(KEY_OFFSET));
-			int lenght = Integer.parseInt((String) hashMap.get(KEY_LENGTH));
+			String stringOffSet = hashMap.get(KEY_OFFSET);
+			int offset = (stringOffSet != null) ? Integer
+					.parseInt(stringOffSet) : 0;
+			String stringLength = hashMap.get(KEY_LENGTH);
+			int lenght = (stringLength != null) ? Integer
+					.parseInt(stringLength) : 0;
 			if (file.length() < offset + lenght) {
 				System.out.println("error out of range");
 				replyMessage.error = true;
@@ -59,43 +61,9 @@ public class CommandReadFile extends Command {
 		byte[] returnByte = new byte[lenght];
 		System.arraycopy(bufferByte, offset, returnByte, 0, lenght);
 		replyMessage.error = false;
-		replyMessage.sendByte = returnByte;
+		replyMessage.content = new String(returnByte);
+		// replyMessage.sendByte = returnByte;
 
-	}
-
-	@Override
-	public String replyMessage(ReplyMessage replyMessage) {
-		StringBuilder sb = new StringBuilder();
-		if (replyMessage.error) {
-			sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_ERROR
-					+ DELIM);
-			sb.append(Constants.KEY_CONTENT + ":" + replyMessage.content);
-
-		} else {
-			sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_OK
-					+ DELIM);
-			sb.append(Constants.KEY_CONTENT + ":"
-					+ new String(replyMessage.sendByte));
-		}
-		return sb.toString();
-	}
-
-	@Override
-	public String replyMessage() {
-		// TODO Auto-generated method stub
-		StringBuilder sb = new StringBuilder();
-		if (replyMessage.error) {
-			sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_ERROR
-					+ DELIM);
-			sb.append(Constants.KEY_CONTENT + ":" + replyMessage.content);
-
-		} else {
-			sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_OK
-					+ DELIM);
-			sb.append(Constants.KEY_CONTENT + ":"
-					+ new String(replyMessage.sendByte));
-		}
-		return sb.toString();
 	}
 
 }

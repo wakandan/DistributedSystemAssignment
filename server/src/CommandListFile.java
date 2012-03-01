@@ -1,18 +1,21 @@
 import java.io.File;
 import java.util.HashMap;
 
-
 public class CommandListFile extends Command {
-	 File[] listOfFiles;
-	public CommandListFile(HashMap<String, String> hashMap,Server server) {
-		this.hashMap = hashMap;
-		replyMessage = new ReplyMessage();
-		this.server = server;
+	final String homeDirectory = "/Users/yewsoonong/Downloads/dropbox/Dropbox/";
+	File[] listOfFiles;
+
+	public CommandListFile(HashMap<String, String> hashMap, Server server) {
+		super(hashMap, server);
 	}
+
 	@Override
 	public ReplyMessage execute() {
 		// TODO Auto-generated method stub
-		File file = new File((String) hashMap.get(KEY_FILENAME));
+		String fileName = (hashMap.get(KEY_FILENAME) == null) ? homeDirectory
+				: homeDirectory + hashMap.get(KEY_FILENAME);
+
+		File file = new File(fileName);
 		if (!file.exists()) {
 			replyMessage.error = true;
 			replyMessage.content = "file not exist";
@@ -20,10 +23,20 @@ public class CommandListFile extends Command {
 		}
 		try {
 			System.out.println("in the list file");
-			 
-			  listOfFiles = file.listFiles(); 
-			  replyMessage.error = false;
-//			readFileAsString(file, offset, lenght, replyMessage);
+
+			listOfFiles = file.listFiles();
+			replyMessage.error = false;
+			StringBuilder sb = new StringBuilder();
+			if (listOfFiles.length > 0) {
+
+				for (int i = 0; i < listOfFiles.length; i++) {
+					sb.append(listOfFiles[i].getName() + ",");
+				}
+				sb.deleteCharAt(sb.length() - 1);
+
+			}
+			replyMessage.content = sb.toString();
+
 		} catch (Exception e) {
 			System.out.println("error reading file");
 			e.printStackTrace();
@@ -32,50 +45,4 @@ public class CommandListFile extends Command {
 
 		return replyMessage;
 	}
-
-	@Override
-	public String replyMessage(ReplyMessage message) {
-		// TODO Auto-generated method stub
-		StringBuilder sb = new StringBuilder();
-		if (replyMessage.error) {
-			sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_ERROR
-					+ DELIM);
-			sb.append(Constants.KEY_CONTENT + ":" + message.content);
-
-		} else {
-			sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_OK
-					+ DELIM);
-			if(listOfFiles.length>0){
-				sb.append(Constants.KEY_CONTENT + ":");
-				for(int i=0;i<listOfFiles.length;i++){
-					sb.append(listOfFiles[i].getName()+",");
-				}
-				sb.deleteCharAt(sb.length()-1);
-			}
-		}
-		return sb.toString();
-	}
-	@Override
-	public String replyMessage() {
-		// TODO Auto-generated method stub
-		StringBuilder sb = new StringBuilder();
-		if (replyMessage.error) {
-			sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_ERROR
-					+ DELIM);
-			sb.append(Constants.KEY_CONTENT + ":" + replyMessage.content);
-
-		} else {
-			sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_OK
-					+ DELIM);
-			if(listOfFiles.length>0){
-				sb.append(Constants.KEY_CONTENT + ":");
-				for(int i=0;i<listOfFiles.length;i++){
-					sb.append(listOfFiles[i].getName()+",");
-				}
-				sb.deleteCharAt(sb.length()-1);
-			}
-		}
-		return sb.toString();
-	}
-
 }

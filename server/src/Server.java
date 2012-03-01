@@ -21,11 +21,12 @@ import java.util.StringTokenizer;
 
 public class Server implements Constants {
 	public static int port = 6789;
+	public static boolean atMost = true;
 	public int serverPort;
 	DatagramSocket socket;
 	public DatagramPacket request;
 	HashMap<String, Client> clientList;
-	
+
 	public byte[] buffer;
 
 	public Server(int port) throws SocketException {
@@ -73,33 +74,40 @@ public class Server implements Constants {
 
 	public String executeCommand(Command command, String indexCommand) {
 		String sendMessageString;
-		String clientAddressPort = request.getAddress().toString()+":"+request.getPort();
-		if (!checkNewClient(clientAddressPort)) {
-			// old client
-			Client client = clientList.get(clientAddressPort);
+		String clientAddressPort = request.getAddress().toString() + ":"
+				+ request.getPort();
+		if (atMost) {
+			if (!checkNewClient(clientAddressPort)) {
+				// old client
+				Client client = clientList.get(clientAddressPort);
 
-			if (client.checkNewCommand(indexCommand)) {
-				// new Command
+				if (client.checkNewCommand(indexCommand)) {
+					// new Command
+					ReplyMessage replyMessage = command.execute();
+					sendMessageString = command.replyMessage(replyMessage);
+					client.addCommand(command, indexCommand);
+					System.out.println("old client new Command");
+				} else {
+					// old command
+					Command oldCommand = client.commandList.get(indexCommand);
+					sendMessageString = oldCommand.replyMessage();
+					System.out.println("old client old Command");
+				}
+			} else {
+				// new Client
+				Client client = new Client(request.getAddress().toString(),
+						request.getPort());
+
 				ReplyMessage replyMessage = command.execute();
 				sendMessageString = command.replyMessage(replyMessage);
 				client.addCommand(command, indexCommand);
-				System.out.println("old client new Command");
-			} else {
-				// old command
-				Command oldCommand = client.commandList.get(indexCommand);
-				sendMessageString = oldCommand.replyMessage();
-				System.out.println("old client old Command");
+				clientList.put(clientAddressPort, client);
+				System.out.println("new Client");
 			}
 		} else {
-			// new Client
-			Client client = new Client(request.getAddress().toString(),
-					request.getPort());
-
 			ReplyMessage replyMessage = command.execute();
 			sendMessageString = command.replyMessage(replyMessage);
-			client.addCommand(command, indexCommand);
-			clientList.put(clientAddressPort, client);
-			System.out.println("new Client");
+
 		}
 		return sendMessageString;
 	}
@@ -107,11 +115,18 @@ public class Server implements Constants {
 	public static void main(String args[]) throws IOException {
 		int serverPort = 6789;
 		Command command;
+		if (args.length > 0) {
+			System.out.println("at least");
+			atMost = false;
+		} else {
+			atMost = true;
+			System.out.println("at most");
+		}
 		Server server = new Server(serverPort);
 		while (true) {
 			server.receiveMessage();
 			String receiveCommand = new String(server.request.getData());
-			command = Command.setCommand(receiveCommand,server);
+			command = Command.setCommand(receiveCommand, server);
 			String indexCommand = command.hashMap.get(INDEX_COMMAND);
 			String sendMessageString = server.executeCommand(command,
 					indexCommand);

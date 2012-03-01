@@ -27,6 +27,7 @@ public class CommandDelete extends Command {
 	public boolean processReply() {
 		if (!super.processReply())
 			return false;
+		System.out.println("[Content] "+request.content);
 		return true;
 	}
 }

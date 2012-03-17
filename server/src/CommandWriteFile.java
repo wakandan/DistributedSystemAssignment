@@ -23,7 +23,7 @@ public class CommandWriteFile extends Command {
 			int offset = Integer.parseInt((String) hashMap.get(KEY_OFFSET));
 
 			String insertText = (String) hashMap.get(KEY_CONTENT);
-			System.out.println("hashMap " + insertText);
+
 			if (file.length() < offset) {
 				System.out.println("error out of range");
 				replyMessage.error = true;

@@ -17,6 +17,7 @@ import java.nio.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class Server implements Constants {
@@ -115,13 +116,19 @@ public class Server implements Constants {
 	public static void main(String args[]) throws IOException {
 		int serverPort = 6789;
 		Command command;
-		if (args.length > 0) {
-			System.out.println("at least");
+		System.out.println("Choose the algorith from server:  ");
+		System.out.println("1: at most");
+		System.out.println("other number: at least");
+		Scanner sc = new Scanner(System.in);
+		int result = sc.nextInt();
+		if(result == 1){
+			System.out.println("Server runs at least algorithm");
 			atMost = false;
-		} else {
+		}else{
 			atMost = true;
-			System.out.println("at most");
+			System.out.println("Server runs at most algorithm");
 		}
+		
 		Server server = new Server(serverPort);
 		while (true) {
 			server.receiveMessage();
@@ -133,6 +140,7 @@ public class Server implements Constants {
 			System.out.println("reply content " + sendMessageString);
 			server.sendMessage(sendMessageString, server.request.getAddress(),
 					server.request.getPort());
+			System.out.println("---------------------------------");
 		}
 	}
 

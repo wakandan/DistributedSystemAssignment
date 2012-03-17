@@ -14,12 +14,14 @@ public class CommandListDir extends Command implements Constants {
 
 	public CommandListDir() {
 		this.cmdName = VAL_CMD_GETDIRECTORY;
+		this.directory = "";
 	}
 
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder();
-		sb.append(KEY_FILENAME + ":" + directory + DELIM);
+		if (!directory.isEmpty())
+			sb.append(KEY_FILENAME + ":" + directory + DELIM);
 		return wrapRequest(sb);
 	}
 

@@ -110,7 +110,17 @@ public class Client implements Constants {
 				choiceValid = false;
 			}
 
+			/* General command flow: - Request related data - Send request -
+			 * Recv reply. Depend on command type, additional data will be
+			 * requested or done accordingly */
 			if (choiceValid) {
+				/* Step1: Request data */
+				if (choiceCode == OPT_DIRECTORY) {
+					this.send(command);
+					this.recv();
+					command.processReply();
+					command.isServed = false;
+				}
 				command.requestData();
 				indexCommand++;
 

@@ -22,8 +22,6 @@ public class CommandListFile extends Command {
 			return replyMessage;
 		}
 		try {
-			System.out.println("in the list file");
-
 			listOfFiles = file.listFiles();
 			replyMessage.error = false;
 			StringBuilder sb = new StringBuilder();

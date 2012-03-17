@@ -121,14 +121,14 @@ public class Server implements Constants {
 		System.out.println("other number: at least");
 		Scanner sc = new Scanner(System.in);
 		int result = sc.nextInt();
-		if(result == 1){
+		if (result == 1) {
 			System.out.println("Server runs at least algorithm");
 			atMost = false;
-		}else{
+		} else {
 			atMost = true;
 			System.out.println("Server runs at most algorithm");
 		}
-		
+
 		Server server = new Server(serverPort);
 		while (true) {
 			server.receiveMessage();

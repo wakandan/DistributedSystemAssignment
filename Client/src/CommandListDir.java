@@ -13,6 +13,7 @@ public class CommandListDir extends Command implements Constants {
 	public String	directory;
 
 	public CommandListDir() {
+		super();
 		this.cmdName = VAL_CMD_GETDIRECTORY;
 		this.directory = "";
 	}
@@ -30,10 +31,10 @@ public class CommandListDir extends Command implements Constants {
 	 * @see Command#requestData() */
 	@Override
 	public void requestData() {
+		buffer = new byte[BUFFER_SIZE];
 		System.out.print("[info] Please enter dir name: ");
 		Scanner sc = new Scanner(System.in);
 		directory = sc.next();
-
 	}
 
 	@Override

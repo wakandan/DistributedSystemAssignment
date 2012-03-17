@@ -120,9 +120,10 @@ public class Client implements Constants {
 					this.recv();
 					command.processReply();
 					command.isServed = false;
+				} else {
+					command.requestData();
+					indexCommand++;
 				}
-				command.requestData();
-				indexCommand++;
 
 				/* only if the command can not be served locally, client send
 				 * the request to server. IMPORTANT: In checking for lost
@@ -166,6 +167,15 @@ public class Client implements Constants {
 					/* reset this value for waiting infinitely */
 					socket.setSoTimeout(0);
 					System.out.println("[info] Register period elapsed. Monitor removed");
+				} else if (choiceCode == OPT_DIRECTORY) {
+					command.requestData();
+					while (!((CommandListDir) command).directory.trim().equalsIgnoreCase("quit")) {
+						indexCommand++;
+						this.send(command);
+						this.recv();
+						command.processReply();
+						command.requestData();
+					}
 				}
 			}
 

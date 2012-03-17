@@ -37,7 +37,7 @@ public abstract class Command implements Constants {
 
 	/* Split a reply into a hashmap, then this will be used by concrete sub
 	 * classes, such as CommandReadFile or CommandWriteFile */
-	public boolean processReply() {
+	public boolean processReply() {		
 		request = Request.read(buffer);
 		System.out.println("[status] " + request.status);
 		isServed = true;

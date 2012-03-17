@@ -38,7 +38,9 @@ public class CommandRegister extends Command {
 
 	@Override
 	public boolean processReply() {
-		if (!super.processReply())
+		boolean processed = super.processReply();
+		System.out.println("[reason] " + request.content);
+		if (!processed)
 			return false;
 		return true;
 	}

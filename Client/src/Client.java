@@ -70,7 +70,7 @@ public class Client implements Constants {
 		System.out.println("**********");
 		System.out.println("1. Read from a file");
 		System.out.println("2. Write to a file");
-		System.out.println("3. Register file to server");
+		System.out.println("3. Monitor a file on server");
 		System.out.println("4. List file in a directory");
 		System.out.println("5. Delete file in server");
 		System.out.println("6. Simulate message lost (idempotent)");
@@ -120,10 +120,10 @@ public class Client implements Constants {
 					this.recv();
 					command.processReply();
 					command.isServed = false;
-				} else {
-					command.requestData();
-					indexCommand++;
+
 				}
+				command.requestData();
+				indexCommand++;
 
 				/* only if the command can not be served locally, client send
 				 * the request to server. IMPORTANT: In checking for lost

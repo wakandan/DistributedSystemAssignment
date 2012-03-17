@@ -24,7 +24,9 @@ public abstract class Command implements Constants {
 
 	public abstract String toString();
 
-	public abstract void requestData();
+	public void requestData() {
+		buffer = new byte[BUFFER_SIZE];
+	}
 
 	public String wrapRequest(StringBuilder request) {
 		StringBuilder sb = new StringBuilder();
@@ -37,14 +39,13 @@ public abstract class Command implements Constants {
 
 	/* Split a reply into a hashmap, then this will be used by concrete sub
 	 * classes, such as CommandReadFile or CommandWriteFile */
-	public boolean processReply() {		
+	public boolean processReply() {
 		request = Request.read(buffer);
-		System.out.println("[status] " + request.status);
+		System.out.println("[status] " + request.status);		
 		isServed = true;
-		if (request.status.equalsIgnoreCase(VAL_STATUS_OK))
+		if (request.status.equalsIgnoreCase(VAL_STATUS_OK)) {
 			return true;
-		else
-			System.out.println("[reason] " + request.content);
-		return false;
+		} else
+			return false;
 	}
 }

@@ -32,7 +32,9 @@ public interface Constants {
 	public static final int		OPT_REGISTER			= 3;
 	public static final int		OPT_READFILE			= 1;
 	public static final int		OPT_WRITEFILE			= 2;
-	public static final int		OPT_EXIT				= 6;
+	public static final int		OPT_SIMLOST_IDEM		= 6;
+	public static final int		OPT_SIMLOST_NONIDEM		= 7;
+	public static final int		OPT_EXIT				= 8;
 	public static final long	CACHE_FRESHTIME			= 30000;			/* in
 																			 * milliseconds */
 }

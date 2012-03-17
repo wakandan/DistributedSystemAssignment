@@ -20,7 +20,6 @@ public class CacheEntry {
 	}
 
 	public boolean isValid() {
-		System.out.println("[info] checking cache");
 		long now = Calendar.getInstance().getTimeInMillis();
 		return (now - createdTime < refreshTime);
 	}

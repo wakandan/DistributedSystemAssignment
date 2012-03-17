@@ -18,6 +18,10 @@ public class Client implements Constants {
 	public InetAddress		server;
 	public Command			command;
 	public Thread			registerThread;
+	public double			msgLostProb;
+
+	/* Timeout for sending a datagram, in seconds */
+	public int				sendTimeout;
 
 	public Client(String serverIp, int serverPort) throws SocketException, UnknownHostException {
 		this.serverIp = serverIp;
@@ -25,6 +29,8 @@ public class Client implements Constants {
 		this.buffer = new byte[BUFFER_SIZE];
 		this.socket = new DatagramSocket();
 		this.server = InetAddress.getByName(this.serverIp);
+		this.sendTimeout = 10000;
+		this.msgLostProb = 0.5;
 	}
 
 	public void send(byte[] bytes, int length) throws IOException {
@@ -67,7 +73,9 @@ public class Client implements Constants {
 		System.out.println("3. Register file to server");
 		System.out.println("4. List file in a directory");
 		System.out.println("5. Delete file in server");
-		System.out.println("6. Exit");
+		System.out.println("6. Simulate message lost (idempotent)");
+		System.out.println("7. Simulate message lost (non-idempotent)");
+		System.out.println("8. Exit");
 		System.out.println("**********");
 		System.out.print("Your command?  ");
 		Scanner sc = new Scanner(System.in);
@@ -80,9 +88,11 @@ public class Client implements Constants {
 		boolean choiceValid = true;
 		while (choiceCode != OPT_EXIT) {
 			switch (choiceCode) {
+			case OPT_SIMLOST_IDEM:
 			case OPT_READFILE:
 				command = new CommandReadFile();
 				break;
+			case OPT_SIMLOST_NONIDEM:
 			case OPT_WRITEFILE:
 				command = new CommandWriteFile();
 				break;
@@ -103,11 +113,25 @@ public class Client implements Constants {
 			if (choiceValid) {
 				command.requestData();
 				indexCommand++;
+
 				/* only if the command can not be served locally, client send
-				 * the request to server */
+				 * the request to server. IMPORTANT: In checking for lost
+				 * simulation, remember to wait until the cache is expired,
+				 * otherwise the data will always be served from cache */
 				if (!command.isServed) {
 					this.send(command);
 					this.recv();
+					if (choiceCode == OPT_SIMLOST_IDEM || choiceCode == OPT_SIMLOST_NONIDEM) {
+						try {
+							Thread.sleep(sendTimeout);
+							System.out.println("[error] Send request timeout");
+							System.out.println("[info] Resending request");
+							this.send(command);
+							this.recv();
+						} catch (InterruptedException e) {
+							e.printStackTrace();
+						}
+					}
 					command.processReply();
 				}
 

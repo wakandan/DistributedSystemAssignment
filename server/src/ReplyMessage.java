@@ -5,6 +5,5 @@ public class ReplyMessage {
 
 	public ReplyMessage() {
 		error = false;
-
 	}
 }

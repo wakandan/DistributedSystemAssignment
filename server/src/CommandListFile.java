@@ -23,6 +23,7 @@ public class CommandListFile extends Command {
 		}
 		try {
 			listOfFiles = file.listFiles();
+
 			replyMessage.error = false;
 			StringBuilder sb = new StringBuilder();
 			if (listOfFiles.length > 0) {

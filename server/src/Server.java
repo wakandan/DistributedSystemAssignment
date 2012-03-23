@@ -117,8 +117,8 @@ public class Server implements Constants {
 		int serverPort = 6789;
 		Command command;
 		System.out.println("Choose the algorith from server:  ");
-		System.out.println("1: at most");
-		System.out.println("other number: at least");
+		System.out.println("1: at least");
+		System.out.println("other number: at most");
 		Scanner sc = new Scanner(System.in);
 		int result = sc.nextInt();
 		if (result == 1) {

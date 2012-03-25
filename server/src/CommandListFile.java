@@ -2,7 +2,7 @@ import java.io.File;
 import java.util.HashMap;
 
 public class CommandListFile extends Command {
-//	final String homeDirectory = "/Users/yewsoonong/Downloads/dropbox/Dropbox/";
+
 	final String homeDirectory = DIRECTORYHOME;
 	File[] listOfFiles;
 

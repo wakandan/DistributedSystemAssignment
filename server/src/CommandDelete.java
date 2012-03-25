@@ -2,7 +2,7 @@ import java.io.File;
 import java.util.HashMap;
 
 public class CommandDelete extends Command {
-//	final String homeDirectory = "/Users/yewsoonong/Downloads/test/";
+
 	final String homeDirectory = DIRECTORYHOME;
 	public CommandDelete(HashMap<String, String> hashMap, Server server) {
 		super(hashMap, server);

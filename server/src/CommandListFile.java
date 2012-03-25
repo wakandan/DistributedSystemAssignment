@@ -2,7 +2,8 @@ import java.io.File;
 import java.util.HashMap;
 
 public class CommandListFile extends Command {
-	final String homeDirectory = "/Users/yewsoonong/Downloads/dropbox/Dropbox/";
+//	final String homeDirectory = "/Users/yewsoonong/Downloads/dropbox/Dropbox/";
+	final String homeDirectory = DIRECTORYHOME;
 	File[] listOfFiles;
 
 	public CommandListFile(HashMap<String, String> hashMap, Server server) {
@@ -11,7 +12,6 @@ public class CommandListFile extends Command {
 
 	@Override
 	public ReplyMessage execute() {
-		// TODO Auto-generated method stub
 		String fileName = (hashMap.get(KEY_FILENAME) == null) ? homeDirectory
 				: homeDirectory + hashMap.get(KEY_FILENAME);
 
@@ -33,13 +33,14 @@ public class CommandListFile extends Command {
 				}
 				sb.deleteCharAt(sb.length() - 1);
 
+			}else{
+				sb.append("<none>");
 			}
 			replyMessage.content = sb.toString();
 
 		} catch (Exception e) {
 			System.out.println("error reading file");
 			e.printStackTrace();
-
 		}
 
 		return replyMessage;

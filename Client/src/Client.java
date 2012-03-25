@@ -72,7 +72,7 @@ public class Client implements Constants {
 		System.out.println("2. Write to a file");
 		System.out.println("3. Monitor a file on server");
 		System.out.println("4. List file in a directory");
-		System.out.println("5. Delete file in server");
+		System.out.println("5. Delete the first file on server");
 		System.out.println("6. Simulate message lost (read a file)");
 		System.out.println("7. Simulate message lost (write a file)");
 		System.out.println("8. Exit");

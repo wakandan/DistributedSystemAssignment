@@ -23,6 +23,9 @@ public class RegisterClientList {
 		clientList.add(client);
 	}
 
+	/*
+	 * remove the client that the monitor time is over
+	 */
 	public boolean refresh() {
 		Long currentTime = System.currentTimeMillis() / 1000;
 		int i = 0;

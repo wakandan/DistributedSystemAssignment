@@ -2,14 +2,14 @@ import java.io.File;
 import java.util.HashMap;
 
 public class CommandDelete extends Command {
-	final String homeDirectory = "/Users/yewsoonong/Downloads/test/";
+//	final String homeDirectory = "/Users/yewsoonong/Downloads/test/";
+	final String homeDirectory = DIRECTORYHOME;
 	public CommandDelete(HashMap<String, String> hashMap, Server server) {
 		super(hashMap, server);
 	}
 
 	@Override
 	public ReplyMessage execute() {
-		// TODO Auto-generated method stub
 		File homeFolder = new File(homeDirectory);
 		File[] listOfFiles = homeFolder.listFiles();
 		File firstFile = null;
@@ -19,7 +19,6 @@ public class CommandDelete extends Command {
 				break;
 			}
 		}
-		//File file = new File((String) hashMap.get(KEY_FILENAME));
 		if (firstFile == null) {
 			replyMessage.error = true;
 			replyMessage.content = "No file in home directory";

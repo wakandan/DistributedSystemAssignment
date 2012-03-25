@@ -33,5 +33,6 @@ public interface Constants {
 	public static final int		OPT_READFILE		= 1;
 	public static final int		OPT_WRITEFILE		= 2;
 	public static final int		OPT_EXIT			= 6;
+	public static final String  DIRECTORYHOME 		="/Users/yewsoonong/Downloads/test/"; 
 }
 

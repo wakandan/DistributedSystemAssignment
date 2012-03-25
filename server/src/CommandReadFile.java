@@ -4,20 +4,20 @@ import java.io.FileReader;
 import java.util.HashMap;
 
 public class CommandReadFile extends Command {
+	final String homeDirectory = DIRECTORYHOME;
 	public CommandReadFile(HashMap<String, String> hashMap, Server server) {
 		super(hashMap, server);
 	}
 
 	@Override
 	public ReplyMessage execute() {
-		// TODO Auto-generated method stub
-
-		File file = new File((String) hashMap.get(KEY_FILENAME));
+		File file = new File(homeDirectory+(String) hashMap.get(KEY_FILENAME));
 		if (!file.exists()) {
 			replyMessage.error = true;
 			replyMessage.content = "file not exist";
 			return replyMessage;
 		}
+		
 		try {
 			String stringOffSet = hashMap.get(KEY_OFFSET);
 			int offset = (stringOffSet != null) ? Integer
@@ -35,13 +35,15 @@ public class CommandReadFile extends Command {
 		} catch (Exception e) {
 			System.out.println("error reading file");
 			e.printStackTrace();
-
 		}
 
 		return replyMessage;
 
 	}
 
+	/*
+	 * read the file
+	 */
 	private void readFileAsString(File filePath, int offset, int lenght,
 			ReplyMessage replyMessage) throws java.io.IOException {
 		BufferedReader reader = new BufferedReader(new FileReader(filePath));
@@ -49,6 +51,7 @@ public class CommandReadFile extends Command {
 		byte[] bufferByte = new byte[10000];
 		int numRead = 0;
 		int index = 0;
+
 		while ((numRead = reader.read(buf)) != -1) {
 			for (int i = 0; i < buf.length; i++) {
 				bufferByte[index + i] = (byte) buf[i];
@@ -62,8 +65,6 @@ public class CommandReadFile extends Command {
 		System.arraycopy(bufferByte, offset, returnByte, 0, lenght);
 		replyMessage.error = false;
 		replyMessage.content = new String(returnByte);
-		// replyMessage.sendByte = returnByte;
-
 	}
 
 }

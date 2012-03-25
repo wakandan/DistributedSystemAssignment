@@ -1,8 +1,3 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,10 +14,14 @@ public abstract class Command implements Constants {
 		this.server = server;
 	}
 
+	/*
+	 * generate the corresponding command based on the data that client sent
+	 */
 	public static Command setCommand(String commandString, Server server) {
 		System.out.println("content " + commandString);
 		StringTokenizer st = new StringTokenizer(commandString, DELIM);
 		HashMap<String, String> hashMapStatic = new HashMap<String, String>();
+		
 		while (st.hasMoreElements()) {
 			String stringPart = st.nextToken().toString();
 			StringTokenizer st1 = new StringTokenizer(stringPart, ":");
@@ -32,11 +31,13 @@ public abstract class Command implements Constants {
 			String value = st1.nextToken();
 			hashMapStatic.put(key, value);
 		}
+		
 		List<String> keys = new ArrayList<String>(hashMapStatic.keySet());
 		for (String key : keys) {
 			System.out.println("key = " + key + " value= "
 					+ hashMapStatic.get(key));
 		}
+		
 		String commandName = (String) hashMapStatic.get(KEY_CMD);
 		if (commandName.equals(VAL_CMD_READFILE)) {
 			return new CommandReadFile(hashMapStatic, server);
@@ -52,8 +53,14 @@ public abstract class Command implements Constants {
 			return null;
 	}
 
+	/*
+	 * execute the commmand
+	 */
 	public abstract ReplyMessage execute();
 
+	/*
+	 * generate the reply message to send to client
+	 */
 	public String replyMessage(ReplyMessage message) {
 		StringBuilder sb = new StringBuilder();
 		if (message.error) {

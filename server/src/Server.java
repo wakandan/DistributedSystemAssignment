@@ -1,24 +1,11 @@
-import java.io.BufferedReader;
-import java.io.File;
+
 import java.io.IOException;
-
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-
-import java.io.FileReader;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
-import java.net.UnknownHostException;
-
-import javax.swing.filechooser.FileSystemView;
-import java.nio.*;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
-import java.util.StringTokenizer;
 
 public class Server implements Constants {
 	public static int port = 6789;
@@ -64,6 +51,9 @@ public class Server implements Constants {
 		socket.send(reply);
 	}
 
+	/*
+	 * check whether the client is the new or old client
+	 */
 	public boolean checkNewClient(String address) {
 		Client client = clientList.get(address);
 		if (client != null)
@@ -73,6 +63,9 @@ public class Server implements Constants {
 
 	}
 
+	/*
+	 * execute the command sent by the client
+	 */
 	public String executeCommand(Command command, String indexCommand) {
 		String sendMessageString;
 		String clientAddressPort = request.getAddress().toString() + ":"
@@ -130,6 +123,7 @@ public class Server implements Constants {
 		}
 
 		Server server = new Server(serverPort);
+		
 		while (true) {
 			server.receiveMessage();
 			String receiveCommand = new String(server.request.getData());

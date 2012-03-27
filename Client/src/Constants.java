@@ -37,4 +37,6 @@ public interface Constants {
 	public static final int		OPT_EXIT				= 8;
 	public static final long	CACHE_FRESHTIME			= 30000;			/* in
 																			 * milliseconds */
+	public static final String	SERVER_IP				= "127.0.0.1";
+	public static final int		SERVER_PORT				= 6789;
 }

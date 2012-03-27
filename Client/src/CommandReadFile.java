@@ -59,8 +59,10 @@ public class CommandReadFile extends Command implements Constants {
 
 	@Override
 	public boolean processReply() {
-		if (!super.processReply())
+		if (!super.processReply()) {
+			System.out.println("[reason] " + request.content);
 			return false;
+		}
 		CacheEntry ce = new CacheEntry(request.content, CACHE_FRESHTIME);
 		cache.put(filename, ce);
 		System.out.println("[content] " + getData(request.content, byteOffset, byteLength));
@@ -70,8 +72,10 @@ public class CommandReadFile extends Command implements Constants {
 	public static String getData(String str, int start, int length) {
 		if (str == null)
 			return null;
-		if (start > str.length())
+		if (start > str.length()) {
+			System.out.println("[error] invalid offset/length");
 			return null;
+		}
 		if (start + length > str.length())
 			return str.substring(start, str.length() - 1);
 		else

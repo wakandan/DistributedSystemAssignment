@@ -27,6 +27,8 @@ public class CommandDelete extends Command {
 		else {
 			try {
 				String fileName = firstFile.getPath();
+				System.out.println("fileName "+fileName);
+				fileName = fileName.substring(homeDirectory.length(),fileName.length());
 				if (firstFile.delete()) {
 					replyMessage.error = false;
 					replyMessage.content = "Delete first file " + fileName + " in home directory successfully";

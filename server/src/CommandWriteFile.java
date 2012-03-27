@@ -112,6 +112,7 @@ public class CommandWriteFile extends Command {
 	 */
 	public String acknowledgeMessage(String fileName) {
 		StringBuilder sb = new StringBuilder();
+		fileName = fileName.substring(homeDirectory.length(),fileName.length());
 		sb.append(Constants.KEY_STATUS + ":" + Constants.VAL_STATUS_OK + DELIM);
 		sb.append(Constants.KEY_CONTENT + ":" + "file " + fileName
 				+ " has been changed");

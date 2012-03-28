@@ -39,8 +39,10 @@ public class CommandListDir extends Command implements Constants {
 
 	@Override
 	public boolean processReply() {
-		if (!super.processReply())
+		if (!super.processReply()){
+			System.out.println("[reason] "+request.content);
 			return false;
+		}
 		if (request.status.equalsIgnoreCase(VAL_STATUS_ERROR)) {
 			System.out.println("[error] Error listing directory");
 			return false;

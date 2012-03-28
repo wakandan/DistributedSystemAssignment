@@ -61,7 +61,13 @@ public class CommandWriteFile extends Command implements Constants {
 	}
 
 	public boolean processReply() {
-		return super.processReply();
+		if( super.processReply()){
+			return true;
+		}else{
+			System.out.println("[reason] "+request.content);
+			return false;
+		}
+		
 	}
 
 }
